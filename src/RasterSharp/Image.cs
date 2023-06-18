@@ -1,82 +1,68 @@
 ﻿using System;
+using System.IO;
 
 namespace RasterSharp;
 
-/// <summary>
-/// Floating-point pixel intensity values over an arbitrary range.
-/// </summary>
 public class Image
 {
-    public readonly int Width;
-    public readonly int Height;
-    private readonly double[] Data;
+    public int Width { get; }
+    public int Height { get; }
+    public Channel Red { get; }
+    public Channel Green { get; }
+    public Channel Blue { get; }
+    public Channel Alpha { get; }
 
-    public Image(int width, int height)
+    public Image(Channel r, Channel g, Channel b)
     {
-        Width = width;
-        Height = height;
-        Data = new double[Width * Height];
+        if (r.Width != g.Width || r.Width != b.Width)
+            throw new InvalidOperationException("image widths must be equal");
+
+        if (r.Height != g.Height || r.Height != b.Height)
+            throw new InvalidOperationException("image widths must be equal");
+
+        Width = r.Width;
+        Height = r.Height;
+
+        Red = r;
+        Green = g;
+        Blue = b;
+        Alpha = new(r.Width, r.Height);
     }
 
-    public Image(int width, int height, double[] data)
+    public Image(string path)
     {
-        Width = width;
-        Height = height;
-        Data = data;
+        byte[] bytes = File.ReadAllBytes(path);
+        Image image = BitmapIO.FromBytes(bytes);
+
+        Width = image.Width;
+        Height = image.Height;
+
+        Red = image.Red;
+        Green = image.Green;
+        Blue = image.Blue;
+        Alpha = image.Alpha;
     }
 
-    public Image Clone()
+    public Image(byte[] bytes)
     {
-        double[] data = new double[Data.Length];
-        Array.Copy(Data, 0, data, 0, Data.Length);
-        return new Image(Width, Height, data);
+        Image image = BitmapIO.FromBytes(bytes);
+
+        Width = image.Width;
+        Height = image.Height;
+
+        Red = image.Red;
+        Green = image.Green;
+        Blue = image.Blue;
+        Alpha = image.Alpha;
     }
 
-    public double GetValue(int x, int y)
+    public int GetRGBA(int x, int y)
     {
-        return Data[y * Width + x];
-    }
-
-    public byte GetByte(int x, int y)
-    {
-        double value = GetValue(x, y);
-        if (value <= 0)
-            return 0;
-        else if (value >= 255)
-            return 255;
-        else
-            return (byte)value;
-    }
-
-    public void SetPixel(int x, int y, double value)
-    {
-        Data[y * Width + x] = value;
-    }
-
-    /// <summary>
-    /// Adjust contrast (mutating the image) to achieve the given min/max intensity
-    /// </summary>
-    public void Rescale(double min = 0, double max = 255)
-    {
-        double originalMin = Data[0];
-        double originalMax = Data[0];
-
-        for (int i = 1; i < Data.Length; i++)
-        {
-            originalMin = Math.Min(originalMin, Data[i]);
-            originalMax = Math.Max(originalMax, Data[i]);
-        }
-
-        double originalSpan = originalMax - originalMin;
-        double newSpan = max - min;
-
-        for (int i = 0; i < Data.Length; i++)
-        {
-            Data[i] = Data[i] - originalMin; // remove original offset
-            Data[i] = Data[i] / originalSpan; // remove original scale (now 0-1)
-            Data[i] = Data[i] * newSpan; // add new scale
-            Data[i] = Data[i] + min; // add new offset
-        }
+        byte r = Red.GetByte(x, y);
+        byte g = Green.GetByte(x, y);
+        byte b = Blue.GetByte(x, y);
+        byte a = Alpha.GetByte(x, y);
+        return ColorConverter.ToRGBA(r, g, b, a);
     }
 
     public byte[] GetBitmapBytes()
@@ -87,7 +73,7 @@ public class Image
     public void Save(string path)
     {
         if (!path.EndsWith(".bmp", StringComparison.InvariantCultureIgnoreCase))
-            throw new InvalidOperationException("save filename must end with .bmp");
+            throw new InvalidOperationException("filename must end with .bmp");
 
         System.IO.File.WriteAllBytes(path, GetBitmapBytes());
     }

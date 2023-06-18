@@ -9,7 +9,7 @@ RasterSharp is a .NET Standard library that enables developers to write cross-pl
   * System.Drawing.Common
   * SkiaSharp
   * ImageSharp
-* Simplicity and interoperability are favored over performance
+* Favor simplicity and interoperability over performance
 * Targets .NET Standard 2.0 (supporting .NET Framework and .NET Core)
 * No dependencies (minimizing security risk)
 * Small code base (easy to review)
@@ -22,3 +22,8 @@ RasterSharp is a .NET Standard library that enables developers to write cross-pl
   * Optional floating point pixel intensity
   * 5-dimensional image types (X, Y, C, Z, T)
   * Multi-dimensional image operations (projection, difference, etc.)
+
+## Not Features
+* Rendering text using system fonts
+* Anti-aliased drawing
+* Hardware-accelerated graphics processing

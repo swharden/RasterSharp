@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 
 namespace RasterSharp;
 
@@ -44,7 +45,25 @@ public class BitmapRGB
         return Bytes[address + delta];
     }
 
-    public byte GetR(int x, int y) => GetPixel(x, y, 2);
-    public byte GetG(int x, int y) => GetPixel(x, y, 1);
-    public byte GetB(int x, int y) => GetPixel(x, y, 0);
+    private double[] GetChannelData(int delta)
+    {
+        double[] data = new double[Width * Height];
+
+        for (int y = 0; y < Height; y++)
+        {
+            long yOffset = StrideWidth * (Height - 1 - y);
+            for (int x = 0; x < Width; x++)
+            {
+                long xOffset = x * BytesPerPixel;
+                long address = DataOffset + xOffset + yOffset + delta;
+                data[y * Width + x] = Bytes[address];
+            }
+        }
+
+        return data;
+    }
+
+    public Image GetImageR() => new(Width, Height, GetChannelData(2));
+    public Image GetImageG() => new(Width, Height, GetChannelData(1));
+    public Image GetImageB() => new(Width, Height, GetChannelData(0));
 }

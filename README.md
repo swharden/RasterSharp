@@ -1,5 +1,7 @@
 # RasterSharp
 
+[![CI](https://github.com/swharden/RasterSharp/actions/workflows/ci.yaml/badge.svg)](https://github.com/swharden/RasterSharp/actions/workflows/ci.yaml)
+
 RasterSharp is a .NET Standard library that enables developers to write cross-platform image manipulation and drawing code which does not depend on any particular graphics library. Using in-memory bitmaps as the only I/O, interoperability is easily achieved with all common graphics libraries.
 
 > ⚠️ This project is pre-alpha and is not intended for public use

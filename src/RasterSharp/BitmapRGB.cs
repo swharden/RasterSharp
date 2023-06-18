@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 
 namespace RasterSharp;
 
@@ -37,12 +36,6 @@ public class BitmapRGB
         Height = BitConverter.ToUInt16(Bytes, 22);
         BytesPerPixel = BitConverter.ToUInt16(Bytes, 28) / 8;
         StrideWidth = 4 * ((Width * BytesPerPixel + 3) / 4);
-    }
-
-    private byte GetPixel(int x, int y, int delta)
-    {
-        long address = DataOffset + StrideWidth * y + x * BytesPerPixel;
-        return Bytes[address + delta];
     }
 
     private double[] GetChannelData(int delta)

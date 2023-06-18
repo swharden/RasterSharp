@@ -32,14 +32,25 @@ public class Image
         return new Image(Width, Height, data);
     }
 
-    public double GetPixel(int x, int y)
+    public double GetValue(int x, int y)
     {
         return Data[y * Width + x];
     }
 
-    public double SetPixel(int x, int y)
+    public byte GetByte(int x, int y)
     {
-        return Data[y * Width + x];
+        double value = GetValue(x, y);
+        if (value <= 0)
+            return 0;
+        else if (value >= 255)
+            return 255;
+        else
+            return (byte)value;
+    }
+
+    public void SetPixel(int x, int y, double value)
+    {
+        Data[y * Width + x] = value;
     }
 
     /// <summary>
@@ -66,5 +77,18 @@ public class Image
             Data[i] = Data[i] * newSpan; // add new scale
             Data[i] = Data[i] + min; // add new offset
         }
+    }
+
+    public byte[] GetBitmapBytes()
+    {
+        return BitmapIO.GetBitmapBytes(this);
+    }
+
+    public void Save(string path)
+    {
+        if (!path.EndsWith(".bmp", StringComparison.InvariantCultureIgnoreCase))
+            throw new InvalidOperationException("save filename must end with .bmp");
+
+        System.IO.File.WriteAllBytes(path, GetBitmapBytes());
     }
 }

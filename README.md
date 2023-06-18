@@ -20,6 +20,8 @@ RasterSharp is a .NET Standard library that enables developers to write cross-pl
 ## Features
 * Included functionality for applying colormaps to single-channel images
 * Basic drawing operations (lines, rectangles, etc.)
+* Built-in image operations (crop, resize, flip, etc.)
+* Built-in image filters (blur, sharpen, etc.)
 * Enhanced support for scientific images
   * Optional floating point pixel intensity
   * 5-dimensional image types (X, Y, C, Z, T)

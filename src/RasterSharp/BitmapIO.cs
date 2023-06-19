@@ -42,7 +42,7 @@ internal static class BitmapIO
 
                 double fraction = img.GetValue(x, y) / 255;
                 int rgba = cmap.GetColor(fraction);
-                (byte r, byte g, byte b, byte a) = ColorConverter.FromRGBA(rgba);
+                (byte r, byte g, byte b, byte a) = Color.Bytes(rgba);
                 pixelData[address + 0] = b; // B
                 pixelData[address + 1] = g; // G
                 pixelData[address + 2] = r; // R

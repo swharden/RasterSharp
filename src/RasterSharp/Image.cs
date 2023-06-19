@@ -106,12 +106,12 @@ public class Image
         byte g = Green.GetByte(x, y);
         byte b = Blue.GetByte(x, y);
         byte a = Alpha.GetByte(x, y);
-        return ColorConverter.ToRGBA(r, g, b, a);
+        return Color.ToInt(r, g, b, a);
     }
 
     public void SetRGBA(int x, int y, int rgba)
     {
-        var colors = ColorConverter.FromRGBA(rgba);
+        var colors = Color.Bytes(rgba);
         Red.SetValue(x, y, colors.r);
         Green.SetValue(x, y, colors.g);
         Blue.SetValue(x, y, colors.b);
@@ -155,7 +155,7 @@ public class Image
 
     public void FillRectangle(Rectangle rect, int color)
     {
-        var colors = ColorConverter.FromRGBA(color);
+        var colors = Color.Bytes(color);
         Red.FillRectangle(rect, colors.r);
         Green.FillRectangle(rect, colors.g);
         Blue.FillRectangle(rect, colors.b);
@@ -164,7 +164,7 @@ public class Image
 
     public void DrawRectangle(Rectangle rect, int color)
     {
-        var colors = ColorConverter.FromRGBA(color);
+        var colors = Color.Bytes(color);
         Red.DrawRectangle(rect, colors.r);
         Green.DrawRectangle(rect, colors.g);
         Blue.DrawRectangle(rect, colors.b);
@@ -173,7 +173,7 @@ public class Image
 
     public void DrawLine(Point pt1, Point pt2, int color)
     {
-        var colors = ColorConverter.FromRGBA(color);
+        var colors = Color.Bytes(color);
         Red.DrawLine(pt1, pt2, colors.r);
         Green.DrawLine(pt1, pt2, colors.g);
         Blue.DrawLine(pt1, pt2, colors.b);

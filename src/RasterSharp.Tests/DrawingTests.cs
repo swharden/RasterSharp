@@ -89,7 +89,7 @@ internal class DrawingTests
             Point pt1 = RandomPoint();
             Point pt2 = RandomPoint();
 
-            int color = ColorConverter.RandomColor(rand);
+            int color = Color.RandomColor(rand);
             image.FillRectangle(pt1, 5, color);
             image.DrawRectangle(pt2, 5, color);
             image.DrawLine(pt1, pt2, color);

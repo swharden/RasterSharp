@@ -85,6 +85,21 @@ public class Image
         Alpha = image.Alpha;
     }
 
+    public Image Clone()
+    {
+        Image img = new(Width, Height);
+
+        for (int y = 0; y < img.Height; y++)
+        {
+            for (int x = 0; x < img.Width; x++)
+            {
+                img.SetRGBA(x, y, GetRGBA(x, y));
+            }
+        }
+
+        return img;
+    }
+
     public int GetRGBA(int x, int y)
     {
         byte r = Red.GetByte(x, y);

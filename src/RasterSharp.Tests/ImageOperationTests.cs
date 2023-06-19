@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace RasterSharp.Tests;
+
 internal class ImageOperationTests
 {
     [Test]
@@ -37,5 +33,21 @@ internal class ImageOperationTests
         Image img = new(SampleData.SmallBmpPath);
         Image img2 = ImageOperations.Resize(img, 300, 200);
         TestIO.SaveBitmap(img2.GetBitmapBytes());
+    }
+
+    [Test]
+    public void Test_Auto_ContrastEachChannel()
+    {
+        Image img = new(SampleData.WashedBmpPath);
+        Filter.AutoContrastEachChannel(img);
+        TestIO.SaveBitmap(img.GetBitmapBytes());
+    }
+
+    [Test]
+    public void Test_Auto_Contrast()
+    {
+        Image img = new(SampleData.WashedBmpPath);
+        Filter.AutoContrast(img);
+        TestIO.SaveBitmap(img.GetBitmapBytes());
     }
 }

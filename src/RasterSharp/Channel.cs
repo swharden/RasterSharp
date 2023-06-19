@@ -11,32 +11,37 @@ public class Channel
 {
     public readonly int Width;
     public readonly int Height;
-    private readonly double[] Data;
+    private readonly double[] Values;
 
     public Channel(int width, int height)
     {
         Width = width;
         Height = height;
-        Data = new double[Width * Height];
+        Values = new double[Width * Height];
     }
 
     public Channel(int width, int height, double[] data)
     {
         Width = width;
         Height = height;
-        Data = data;
+        Values = data;
     }
 
     public Channel Clone()
     {
-        double[] data = new double[Data.Length];
-        Array.Copy(Data, 0, data, 0, Data.Length);
+        double[] data = new double[Values.Length];
+        Array.Copy(Values, 0, data, 0, Values.Length);
         return new Channel(Width, Height, data);
     }
 
     public double GetValue(int x, int y)
     {
-        return Data[y * Width + x];
+        return Values[y * Width + x];
+    }
+
+    public double[] GetValues()
+    {
+        return Values;
     }
 
     public byte GetByte(int x, int y)
@@ -53,9 +58,9 @@ public class Channel
     public void SetValue(int x, int y, double value)
     {
         int address = y * Width + x;
-        if (address >= Data.Length || address < 0)
+        if (address >= Values.Length || address < 0)
             return;
-        Data[address] = value;
+        Values[address] = value;
     }
 
     /// <summary>
@@ -63,24 +68,24 @@ public class Channel
     /// </summary>
     public void Rescale(double min = 0, double max = 255)
     {
-        double originalMin = Data[0];
-        double originalMax = Data[0];
+        double originalMin = Values[0];
+        double originalMax = Values[0];
 
-        for (int i = 1; i < Data.Length; i++)
+        for (int i = 1; i < Values.Length; i++)
         {
-            originalMin = Math.Min(originalMin, Data[i]);
-            originalMax = Math.Max(originalMax, Data[i]);
+            originalMin = Math.Min(originalMin, Values[i]);
+            originalMax = Math.Max(originalMax, Values[i]);
         }
 
         double originalSpan = originalMax - originalMin;
         double newSpan = max - min;
 
-        for (int i = 0; i < Data.Length; i++)
+        for (int i = 0; i < Values.Length; i++)
         {
-            Data[i] = Data[i] - originalMin; // remove original offset
-            Data[i] = Data[i] / originalSpan; // remove original scale (now 0-1)
-            Data[i] = Data[i] * newSpan; // add new scale
-            Data[i] = Data[i] + min; // add new offset
+            Values[i] = Values[i] - originalMin; // remove original offset
+            Values[i] = Values[i] / originalSpan; // remove original scale (now 0-1)
+            Values[i] = Values[i] * newSpan; // add new scale
+            Values[i] = Values[i] + min; // add new offset
         }
     }
 

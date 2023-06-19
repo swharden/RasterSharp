@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 
 namespace RasterSharp;
@@ -125,5 +126,54 @@ public class Image
         }
 
         return new(red, green, blue, alpha);
+    }
+
+    public void DrawRectangle(Point pt, int radius, int color)
+    {
+        Rectangle rect = new(
+            x: pt.X - radius,
+            y: pt.Y - radius,
+            width: radius * 2,
+            height: radius * 2);
+
+        DrawRectangle(rect, color);
+    }
+
+    public void FillRectangle(Point pt, int radius, int color)
+    {
+        Rectangle rect = new(
+            x: pt.X - radius,
+            y: pt.Y - radius,
+            width: radius * 2,
+            height: radius * 2);
+
+        FillRectangle(rect, color);
+    }
+
+    public void FillRectangle(Rectangle rect, int color)
+    {
+        var colors = ColorConverter.FromRGBA(color);
+        Red.FillRectangle(rect, colors.r);
+        Green.FillRectangle(rect, colors.g);
+        Blue.FillRectangle(rect, colors.b);
+        Alpha.FillRectangle(rect, colors.a);
+    }
+
+    public void DrawRectangle(Rectangle rect, int color)
+    {
+        var colors = ColorConverter.FromRGBA(color);
+        Red.DrawRectangle(rect, colors.r);
+        Green.DrawRectangle(rect, colors.g);
+        Blue.DrawRectangle(rect, colors.b);
+        Alpha.DrawRectangle(rect, colors.a);
+    }
+
+    public void DrawLine(Point pt1, Point pt2, int color)
+    {
+        var colors = ColorConverter.FromRGBA(color);
+        Red.DrawLine(pt1, pt2, colors.r);
+        Green.DrawLine(pt1, pt2, colors.g);
+        Blue.DrawLine(pt1, pt2, colors.b);
+        Alpha.DrawLine(pt1, pt2, colors.a);
     }
 }

@@ -75,7 +75,7 @@ internal class DrawingTests
     {
         Random rand = new(0);
 
-        Channel image = new(400, 400);
+        Image image = new(400, 400);
 
         Point RandomPoint(int padding = 20)
         {
@@ -89,7 +89,7 @@ internal class DrawingTests
             Point pt1 = RandomPoint();
             Point pt2 = RandomPoint();
 
-            int color = rand.Next(50, 255);
+            int color = ColorConverter.RandomColor(rand);
             image.FillRectangle(pt1, 5, color);
             image.DrawRectangle(pt2, 5, color);
             image.DrawLine(pt1, pt2, color);

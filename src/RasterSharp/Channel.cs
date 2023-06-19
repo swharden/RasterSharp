@@ -109,15 +109,15 @@ public class Channel
         System.IO.File.WriteAllBytes(path, GetBitmapBytes());
     }
 
-    public void DrawRectangle(Point pt, int radius, double value)
+    public void FillRectangle(Rectangle rect, double value)
     {
-        Rectangle rect = new(
-            x: pt.X - radius,
-            y: pt.Y - radius,
-            width: radius * 2,
-            height: radius * 2);
-
-        DrawRectangle(rect, value);
+        for (int x = rect.Left; x <= rect.Right; x++)
+        {
+            for (int y = rect.Top; y <= rect.Bottom; y++)
+            {
+                SetValue(x, y, value);
+            }
+        }
     }
 
     public void DrawRectangle(Rectangle rect, double value)
@@ -131,28 +131,6 @@ public class Channel
         DrawLine(topRight, bottomRight, value);
         DrawLine(bottomRight, bottomLeft, value);
         DrawLine(bottomLeft, topLeft, value);
-    }
-
-    public void FillRectangle(Point pt, int radius, double value)
-    {
-        Rectangle rect = new(
-            x: pt.X - radius,
-            y: pt.Y - radius,
-            width: radius * 2,
-            height: radius * 2);
-
-        FillRectangle(rect, value);
-    }
-
-    public void FillRectangle(Rectangle rect, double value)
-    {
-        for (int x = rect.Left; x <= rect.Right; x++)
-        {
-            for (int y = rect.Top; y <= rect.Bottom; y++)
-            {
-                SetValue(x, y, value);
-            }
-        }
     }
 
     public void DrawLine(Point pt1, Point pt2, double value)

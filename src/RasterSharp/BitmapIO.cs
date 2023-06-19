@@ -104,9 +104,9 @@ internal static class BitmapIO
             for (int x = 0; x < Width; x++)
             {
                 long address = DataOffset + yOffset + x * BytesPerPixel;
-                red.SetPixel(x, y, Bytes[address + 2]);
-                green.SetPixel(x, y, Bytes[address + 1]);
-                blue.SetPixel(x, y, Bytes[address + 0]);
+                red.SetValue(x, y, Bytes[address + 2]);
+                green.SetValue(x, y, Bytes[address + 1]);
+                blue.SetValue(x, y, Bytes[address + 0]);
             }
         }
 

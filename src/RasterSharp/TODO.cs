@@ -1,10 +1,8 @@
 ﻿namespace RasterSharp;
 
-// colormaps
-// single channel colorize
 // drawing lines, rectangles, etc.
-// crop
 // resize
-// test single channel save and merge
+// multiply and add
 // test auto contrast
 // add manual window setting
+// analysis static class

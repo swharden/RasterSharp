@@ -29,6 +29,23 @@ public class Image
         Alpha = new(r.Width, r.Height);
     }
 
+    public Image(Channel r, Channel g, Channel b, Channel a)
+    {
+        if (r.Width != g.Width || r.Width != b.Width || r.Width != a.Width)
+            throw new InvalidOperationException("image widths must be equal");
+
+        if (r.Height != g.Height || r.Height != b.Height || r.Height != a.Height)
+            throw new InvalidOperationException("image widths must be equal");
+
+        Width = r.Width;
+        Height = r.Height;
+
+        Red = r;
+        Green = g;
+        Blue = b;
+        Alpha = a;
+    }
+
     public Image(string path)
     {
         byte[] bytes = File.ReadAllBytes(path);
@@ -76,5 +93,26 @@ public class Image
             throw new InvalidOperationException("filename must end with .bmp");
 
         System.IO.File.WriteAllBytes(path, GetBitmapBytes());
+    }
+
+    public Image Crop(int left, int top, int width, int height)
+    {
+        Channel red = new(width, height);
+        Channel green = new(width, height);
+        Channel blue = new(width, height);
+        Channel alpha = new(width, height);
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                red.SetValue(x, y, Red.GetValue(x + left, y + top));
+                green.SetValue(x, y, Green.GetValue(x + left, y + top));
+                blue.SetValue(x, y, Blue.GetValue(x + left, y + top));
+                alpha.SetValue(x, y, Alpha.GetValue(x + left, y + top));
+            }
+        }
+
+        return new(red, green, blue, alpha);
     }
 }

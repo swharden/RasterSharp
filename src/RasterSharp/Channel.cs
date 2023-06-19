@@ -49,7 +49,7 @@ public class Channel
             return (byte)value;
     }
 
-    public void SetPixel(int x, int y, double value)
+    public void SetValue(int x, int y, double value)
     {
         Data[y * Width + x] = value;
     }

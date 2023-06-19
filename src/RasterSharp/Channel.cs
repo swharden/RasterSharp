@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace RasterSharp;
 
@@ -103,5 +104,51 @@ public class Channel
             throw new InvalidOperationException("save filename must end with .bmp");
 
         System.IO.File.WriteAllBytes(path, GetBitmapBytes());
+    }
+
+    public void DrawLine(int x1, int x2, int y1, int y2, double value)
+    {
+        // TODO: optimize
+
+        int xMin = Math.Min(x1, x2);
+        int xMax = Math.Max(x1, x2);
+        int yMin = Math.Min(y1, y2);
+        int yMax = Math.Max(y1, y2);
+
+        int xSpan = xMax - xMin;
+        int ySpan = yMax - yMin;
+
+        if (xSpan == 0)
+        {
+            for (int y = yMin; y <= yMax; y++)
+                SetValue(xMin, y, value);
+        }
+        else if (ySpan == 0)
+        {
+            for (int x = xMin; x <= xMax; x++)
+                SetValue(x, yMin, value);
+        }
+        else if (ySpan > xSpan)
+        {
+            for (int y = yMin; y <= yMax; y++)
+            {
+                double frac = (y - yMin) / (double)ySpan;
+                if (y2 < y1)
+                    frac = 1 - frac;
+                int x = (int)(frac * xSpan + xMin);
+                SetValue(x, y, value);
+            }
+        }
+        else
+        {
+            for (int x = xMin; x <= xMax; x++)
+            {
+                double frac = (x - xMin) / (double)xSpan;
+                if (x2 < x1)
+                    frac = 1 - frac;
+                int y = (int)(frac * ySpan + yMin);
+                SetValue(x, y, value);
+            }
+        }
     }
 }

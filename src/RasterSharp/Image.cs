@@ -12,6 +12,17 @@ public class Image
     public Channel Blue { get; }
     public Channel Alpha { get; }
 
+    public Image(int width, int height)
+    {
+        Width = width;
+        Height = height;
+
+        Red = new(width, height);
+        Green = new(width, height);
+        Blue = new(width, height);
+        Alpha = new(width, height);
+    }
+
     public Image(Channel r, Channel g, Channel b)
     {
         if (r.Width != g.Width || r.Width != b.Width)

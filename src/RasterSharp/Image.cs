@@ -94,6 +94,15 @@ public class Image
         return ColorConverter.ToRGBA(r, g, b, a);
     }
 
+    public void SetRGBA(int x, int y, int rgba)
+    {
+        var colors = ColorConverter.FromRGBA(rgba);
+        Red.SetValue(x, y, colors.r);
+        Green.SetValue(x, y, colors.g);
+        Blue.SetValue(x, y, colors.b);
+        Alpha.SetValue(x, y, colors.a);
+    }
+
     public byte[] GetBitmapBytes()
     {
         return BitmapIO.GetBitmapBytes(this);
@@ -105,27 +114,6 @@ public class Image
             throw new InvalidOperationException("filename must end with .bmp");
 
         System.IO.File.WriteAllBytes(path, GetBitmapBytes());
-    }
-
-    public Image Crop(int left, int top, int width, int height)
-    {
-        Channel red = new(width, height);
-        Channel green = new(width, height);
-        Channel blue = new(width, height);
-        Channel alpha = new(width, height);
-
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                red.SetValue(x, y, Red.GetValue(x + left, y + top));
-                green.SetValue(x, y, Green.GetValue(x + left, y + top));
-                blue.SetValue(x, y, Blue.GetValue(x + left, y + top));
-                alpha.SetValue(x, y, Alpha.GetValue(x + left, y + top));
-            }
-        }
-
-        return new(red, green, blue, alpha);
     }
 
     public void DrawRectangle(Point pt, int radius, int color)

@@ -2,7 +2,7 @@
 
 public static class ColorConverter
 {
-    public static int ToRGBA(byte r, byte g, byte b, byte a)
+    public static int ToRGBA(byte r, byte g, byte b, byte a = 0)
     {
         return (r << 24) | (g << 16) | (b << 8) | (a << 0);
     }

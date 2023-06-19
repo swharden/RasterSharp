@@ -1,6 +1,5 @@
 ﻿namespace RasterSharp;
 
-// colors as RGBA
 // colormaps
 // single channel colorize
 // drawing lines, rectangles, etc.

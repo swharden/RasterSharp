@@ -82,10 +82,22 @@ public class Channel
 
     public byte[] GetBitmapBytes()
     {
-        return BitmapIO.GetBitmapBytes(this);
+        IColormap cmap = new Colormaps.Grayscale();
+        return GetBitmapBytes(cmap);
+    }
+
+    public byte[] GetBitmapBytes(IColormap cmap)
+    {
+        return BitmapIO.GetBitmapBytes(this, cmap);
     }
 
     public void Save(string path)
+    {
+        IColormap cmap = new Colormaps.Grayscale();
+        Save(path, cmap);
+    }
+
+    public void Save(string path, IColormap cmap)
     {
         if (!path.EndsWith(".bmp", StringComparison.InvariantCultureIgnoreCase))
             throw new InvalidOperationException("save filename must end with .bmp");

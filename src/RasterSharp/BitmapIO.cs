@@ -27,8 +27,9 @@ internal static class BitmapIO
         return GetBitmapBytes(img.Width, img.Height, pixelData);
     }
 
-    public static byte[] GetBitmapBytes(Channel img)
+    public static byte[] GetBitmapBytes(Channel img, IColormap cmap)
     {
+
         int bytesPerPixel = 4;
         int strideWidth = 4 * ((img.Width * bytesPerPixel + 3) / 4);
 
@@ -39,11 +40,13 @@ internal static class BitmapIO
             {
                 int address = (img.Height - 1 - y) * strideWidth + x * bytesPerPixel;
 
-                byte value = img.GetByte(x, y);
-                pixelData[address + 0] = value; // B
-                pixelData[address + 1] = value; // G
-                pixelData[address + 2] = value; // R
-                pixelData[address + 3] = 0;     // A
+                double fraction = img.GetValue(x, y) / 255;
+                int rgba = cmap.GetColor(fraction);
+                (byte r, byte g, byte b, byte a) = ColorConverter.FromRGBA(rgba);
+                pixelData[address + 0] = b; // B
+                pixelData[address + 1] = g; // G
+                pixelData[address + 2] = r; // R
+                pixelData[address + 3] = a; // A
             }
         }
 

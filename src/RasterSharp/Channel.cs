@@ -52,7 +52,10 @@ public class Channel
 
     public void SetValue(int x, int y, double value)
     {
-        Data[y * Width + x] = value;
+        int address = y * Width + x;
+        if (address >= Data.Length || address < 0)
+            return;
+        Data[address] = value;
     }
 
     /// <summary>
@@ -106,49 +109,98 @@ public class Channel
         System.IO.File.WriteAllBytes(path, GetBitmapBytes());
     }
 
-    public void DrawLine(int x1, int x2, int y1, int y2, double value)
+    public void DrawRectangle(Point pt, int radius, double value)
     {
-        // TODO: optimize
+        Rectangle rect = new(
+            x: pt.X - radius,
+            y: pt.Y - radius,
+            width: radius * 2,
+            height: radius * 2);
 
-        int xMin = Math.Min(x1, x2);
-        int xMax = Math.Max(x1, x2);
-        int yMin = Math.Min(y1, y2);
-        int yMax = Math.Max(y1, y2);
+        DrawRectangle(rect, value);
+    }
 
-        int xSpan = xMax - xMin;
-        int ySpan = yMax - yMin;
+    public void DrawRectangle(Rectangle rect, double value)
+    {
+        Point topLeft = new(rect.Left, rect.Top);
+        Point topRight = new(rect.Right, rect.Top);
+        Point bottomLeft = new(rect.Left, rect.Bottom);
+        Point bottomRight = new(rect.Right, rect.Bottom);
 
-        if (xSpan == 0)
+        DrawLine(topLeft, topRight, value);
+        DrawLine(topRight, bottomRight, value);
+        DrawLine(bottomRight, bottomLeft, value);
+        DrawLine(bottomLeft, topLeft, value);
+    }
+
+    public void FillRectangle(Point pt, int radius, double value)
+    {
+        Rectangle rect = new(
+            x: pt.X - radius,
+            y: pt.Y - radius,
+            width: radius * 2,
+            height: radius * 2);
+
+        FillRectangle(rect, value);
+    }
+
+    public void FillRectangle(Rectangle rect, double value)
+    {
+        for (int x = rect.Left; x <= rect.Right; x++)
         {
-            for (int y = yMin; y <= yMax; y++)
-                SetValue(xMin, y, value);
-        }
-        else if (ySpan == 0)
-        {
-            for (int x = xMin; x <= xMax; x++)
-                SetValue(x, yMin, value);
-        }
-        else if (ySpan > xSpan)
-        {
-            for (int y = yMin; y <= yMax; y++)
+            for (int y = rect.Top; y <= rect.Bottom; y++)
             {
-                double frac = (y - yMin) / (double)ySpan;
-                if (y2 < y1)
-                    frac = 1 - frac;
-                int x = (int)(frac * xSpan + xMin);
                 SetValue(x, y, value);
             }
         }
+    }
+
+    public void DrawLine(Point pt1, Point pt2, double value)
+    {
+        int xSpan = Math.Abs(pt2.X - pt1.X);
+        int ySpan = Math.Abs(pt2.Y - pt1.Y);
+
+        if (xSpan > ySpan)
+            DrawLineShallow(pt1, pt2, value);
         else
+            DrawLineSteep(pt1, pt2, value);
+    }
+
+    private void DrawLineShallow(Point pt1, Point pt2, double value)
+    {
+        if (pt1.X > pt2.X)
+            (pt1, pt2) = (pt2, pt1);
+
+        int xSpan = pt2.X - pt1.X;
+        int ySpan = pt2.Y - pt1.Y;
+        double slope = (double)ySpan / xSpan;
+
+        double dy = 0;
+        for (int dx = 0; dx < xSpan; dx++)
         {
-            for (int x = xMin; x <= xMax; x++)
-            {
-                double frac = (x - xMin) / (double)xSpan;
-                if (x2 < x1)
-                    frac = 1 - frac;
-                int y = (int)(frac * ySpan + yMin);
-                SetValue(x, y, value);
-            }
+            int x = pt1.X + dx;
+            int y = (int)(pt1.Y + dy);
+            dy += slope;
+            SetValue(x, y, value);
+        }
+    }
+
+    private void DrawLineSteep(Point pt1, Point pt2, double value)
+    {
+        if (pt1.Y > pt2.Y)
+            (pt1, pt2) = (pt2, pt1);
+
+        int xSpan = pt2.X - pt1.X;
+        int ySpan = pt2.Y - pt1.Y;
+        double changePerPixel = (double)xSpan / ySpan;
+
+        double dx = 0;
+        for (int dy = 0; dy < ySpan; dy++)
+        {
+            int y = pt1.Y + dy;
+            int x = (int)(pt1.X + dx);
+            dx += changePerPixel;
+            SetValue(x, y, value);
         }
     }
 }

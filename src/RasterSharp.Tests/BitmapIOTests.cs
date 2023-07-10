@@ -36,7 +36,7 @@ public class BitmapIOTests
         image.Red.Save(Path.Join(outputFolder, "save-red.bmp"));
         image.Green.Save(Path.Join(outputFolder, "save-green.bmp"));
         image.Blue.Save(Path.Join(outputFolder, "save-blue.bmp"));
-        image.Save(Path.Join(outputFolder, "save-rgb.bmp"));
+        image.SaveBmp(Path.Join(outputFolder, "save-rgb.bmp"));
 
         Image image2 = new(Path.Join(outputFolder, "save-rgb.bmp"));
         for (int y = 0; y < image.Height; y++)

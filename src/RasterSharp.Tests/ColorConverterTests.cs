@@ -11,7 +11,7 @@ internal class ColorConverterTests
         {
             int original = rand.Next();
             (byte r, byte g, byte b, byte a) = Color.Bytes(original);
-            int returned = Color.ToInt(r, g, b, a);
+            int returned = Color.FromRGBA(r, g, b, a);
             Assert.That(returned, Is.EqualTo(original));
         }
     }

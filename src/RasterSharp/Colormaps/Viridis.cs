@@ -16,7 +16,7 @@ public class Viridis : IColormap
         byte g = (byte)(value2 >> 8);
         byte b = (byte)(value2 >> 0);
 
-        return Color.ToInt(r, g, b, a);
+        return Color.FromRGBA(r, g, b, a);
     }
 
     private static readonly uint[] rgbs =

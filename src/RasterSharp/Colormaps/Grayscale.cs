@@ -9,6 +9,6 @@ public class Grayscale : IColormap
         fraction = Math.Max(0, fraction);
         fraction = Math.Min(1, fraction);
         byte value = (byte)(fraction * 255);
-        return Color.ToInt(value, value, value);
+        return Color.FromRGB(value, value, value);
     }
 }

@@ -106,7 +106,7 @@ public class Image
         byte g = Green.GetByte(x, y);
         byte b = Blue.GetByte(x, y);
         byte a = Alpha.GetByte(x, y);
-        return Color.ToInt(r, g, b, a);
+        return Color.FromRGBA(r, g, b, a);
     }
 
     public void SetRGBA(int x, int y, int rgba)
@@ -123,7 +123,7 @@ public class Image
         return BitmapIO.GetBitmapBytes(this);
     }
 
-    public void Save(string path)
+    public void SaveBmp(string path)
     {
         if (!path.EndsWith(".bmp", StringComparison.InvariantCultureIgnoreCase))
             throw new InvalidOperationException("filename must end with .bmp");
@@ -131,15 +131,25 @@ public class Image
         System.IO.File.WriteAllBytes(path, GetBitmapBytes());
     }
 
-    public void DrawRectangle(Point pt, int radius, int color)
+    public void Fill(int color = 0)
     {
-        Rectangle rect = new(
-            x: pt.X - radius,
-            y: pt.Y - radius,
-            width: radius * 2,
-            height: radius * 2);
+        Rectangle rect = new(0, 0, Width, Height);
+        FillRectangle(rect, color);
+    }
 
-        DrawRectangle(rect, color);
+    public void FillRectangle(int x, int y, int width, int height, int color)
+    {
+        Rectangle rect = new(x, y, width, height);
+        FillRectangle(rect, color);
+    }
+
+    public void FillRectangle(Rectangle rect, int color)
+    {
+        var colors = Color.Bytes(color);
+        Red.FillRectangle(rect, colors.r);
+        Green.FillRectangle(rect, colors.g);
+        Blue.FillRectangle(rect, colors.b);
+        Alpha.FillRectangle(rect, colors.a);
     }
 
     public void FillRectangle(Point pt, int radius, int color)
@@ -153,13 +163,10 @@ public class Image
         FillRectangle(rect, color);
     }
 
-    public void FillRectangle(Rectangle rect, int color)
+    public void DrawRectangle(int x, int y, int width, int height, int color)
     {
-        var colors = Color.Bytes(color);
-        Red.FillRectangle(rect, colors.r);
-        Green.FillRectangle(rect, colors.g);
-        Blue.FillRectangle(rect, colors.b);
-        Alpha.FillRectangle(rect, colors.a);
+        Rectangle rect = new(x, y, width, height);
+        DrawRectangle(rect, color);
     }
 
     public void DrawRectangle(Rectangle rect, int color)
@@ -169,6 +176,24 @@ public class Image
         Green.DrawRectangle(rect, colors.g);
         Blue.DrawRectangle(rect, colors.b);
         Alpha.DrawRectangle(rect, colors.a);
+    }
+
+    public void DrawRectangle(Point pt, int radius, int color)
+    {
+        Rectangle rect = new(
+            x: pt.X - radius,
+            y: pt.Y - radius,
+            width: radius * 2,
+            height: radius * 2);
+
+        DrawRectangle(rect, color);
+    }
+
+    public void DrawLine(int x1, int y1, int x2, int y2, int color)
+    {
+        Point pt1 = new(x1, y1);
+        Point pt2 = new(x2, y2);
+        DrawLine(pt1, pt2, color);
     }
 
     public void DrawLine(Point pt1, Point pt2, int color)

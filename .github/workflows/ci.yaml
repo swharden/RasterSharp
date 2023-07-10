@@ -19,8 +19,16 @@ jobs:
         with:
           dotnet-version: "7.0.x"
       - name: 🚚 Restore
-        run: dotnet restore src/RasterSharp.sln
+        run: dotnet restore src
       - name: 🛠️ Build
-        run: dotnet build src/RasterSharp.sln --configuration Release --no-restore
+        run: dotnet build src --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test src/RasterSharp.sln --configuration Release --no-restore --verbosity minimal
+        run: dotnet test src --configuration Release --no-restore --verbosity minimal
+      - name: 📦 Pack
+        run: dotnet pack src --configuration Release
+      - name: 🛠️ Setup NuGet
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+      - name: 🚀 Publish Package # only succeeds if the version was bumped
+        run: nuget push src/RasterSharp/bin/Release/*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json

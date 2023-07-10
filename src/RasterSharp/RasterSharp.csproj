@@ -17,7 +17,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>Graphics Drawing Raster Color Colormap Heatmap</PackageTags>
         <Description>A .NET library for working with images in memory</Description>
-        <!--<PackageIcon>icon.png</PackageIcon>-->
+        <PackageIcon>icon.png</PackageIcon>
         <!--<PackageReadmeFile>readme.md</PackageReadmeFile>-->
         <PackageProjectUrl>https://github.com/swharden/RasterSharp</PackageProjectUrl>
         <RepositoryUrl>https://github.com/swharden/RasterSharp.git</RepositoryUrl>
@@ -29,6 +29,11 @@
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../../dev/icon/icon-128.png" Pack="true" PackagePath="icon.png" />
+        <!--<None Include="../../readme.md" Pack="true" PackagePath="readme.md" />-->
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">

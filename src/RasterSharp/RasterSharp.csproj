@@ -1,8 +1,32 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        
+        <!-- Targets -->
+        <TargetFramework>netstandard2.0</TargetFramework>
+
+        <!-- Language -->
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>false</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <!-- NuGet Package -->
+        <Authors>Scott Harden</Authors>
+        <Company>Harden Technologies, LLC</Company>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>Graphics Drawing Raster Color Colormap Heatmap</PackageTags>
+        <Description>A .NET library for working with images in memory</Description>
+        <!--<PackageIcon>icon.png</PackageIcon>-->
+        <!--<PackageReadmeFile>readme.md</PackageReadmeFile>-->
+        <PackageProjectUrl>https://github.com/swharden/RasterSharp</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/swharden/RasterSharp.git</RepositoryUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IncludeSource>true</IncludeSource>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+        
+    </PropertyGroup>
 
 </Project>

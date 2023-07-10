@@ -204,4 +204,32 @@ public class Image
         Blue.DrawLine(pt1, pt2, colors.b);
         Alpha.DrawLine(pt1, pt2, colors.a);
     }
+
+    // TODO: draw a thick line tangend to the line angle
+
+    public void DrawThickLineX(Point pt1, Point pt2, int color, int thickness)
+    {
+        int x1 = pt1.X;
+        int y1 = pt1.Y;
+        int x2 = pt2.X;
+        int y2 = pt2.Y;
+
+        for (int i = 0; i < thickness; i++)
+        {
+            DrawLine(x1 + i, y1, x2 + i, y2, color);
+        }
+    }
+
+    public void DrawThickLineY(Point pt1, Point pt2, int color, int thickness)
+    {
+        int x1 = pt1.X;
+        int y1 = pt1.Y;
+        int x2 = pt2.X;
+        int y2 = pt2.Y;
+
+        for (int i = 0; i < thickness; i++)
+        {
+            DrawLine(x1, y1 + i, x2, y2 + i, color);
+        }
+    }
 }

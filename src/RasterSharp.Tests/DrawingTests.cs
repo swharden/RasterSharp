@@ -97,4 +97,34 @@ internal class DrawingTests
 
         TestIO.SaveBitmap(image.GetBitmapBytes());
     }
+
+    [Test]
+    public void Test_DrawLine_ThickX()
+    {
+        Image image = new(400, 400);
+
+        for (int i = 0; i < 10; i++)
+        {
+            Point pt1 = new(50 + i * 20, 300);
+            Point pt2 = new(150 + i * 20, 100);
+            image.DrawThickLineX(pt1, pt2, Colors.White, thickness: i);
+        }
+
+        TestIO.SaveBitmap(image.GetBitmapBytes());
+    }
+
+    [Test]
+    public void Test_DrawLine_ThickY()
+    {
+        Image image = new(400, 400);
+
+        for (int i = 0; i < 10; i++)
+        {
+            Point pt1 = new(50 + i * 20, 300);
+            Point pt2 = new(150 + i * 20, 100);
+            image.DrawThickLineY(pt1, pt2, Colors.White, thickness: i);
+        }
+
+        TestIO.SaveBitmap(image.GetBitmapBytes());
+    }
 }

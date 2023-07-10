@@ -31,4 +31,4 @@ jobs:
         with:
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
       - name: 🚀 Publish Package # only succeeds if the version was bumped
-        run: nuget push src/RasterSharp/bin/Release/*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+        run: nuget push src/RasterSharp/bin/Release/*.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json
